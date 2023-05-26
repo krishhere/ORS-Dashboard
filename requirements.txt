@@ -1,0 +1,11 @@
+cx_Oracle==8.3.0
+dash==2.5.1
+dash_bootstrap_components==1.1.0
+orca==1.8
+pandas==1.4.2
+Pillow==9.5.0
+plotly==5.8.0
+requests==2.27.1
+SQLAlchemy==1.4.37
+gunicorn
+dash-tools
