@@ -10,7 +10,6 @@ import dash_bootstrap_components as dbc
 import plotly.express as px
 import os
 import threading
-from app import app
 
 username = 'UFD_ORS'
 password = 'Di$closeNot'

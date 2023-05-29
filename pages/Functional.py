@@ -8,7 +8,6 @@ import plotly.express as px
 import sqlalchemy
 from sqlalchemy.exc import SQLAlchemyError
 import os
-from app import app
 
 username = 'UFD_ORS'
 password = 'Di$closeNot'

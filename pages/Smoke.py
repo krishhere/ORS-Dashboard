@@ -11,7 +11,6 @@ import plotly.express as px
 import os
 import threading
 from Mail import sendEmail
-from app import app
 
 username = 'UFD_ORS'
 password = 'Di$closeNot'
