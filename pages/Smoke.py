@@ -11,7 +11,7 @@ import plotly.express as px
 import os
 import threading
 from Mail import sendEmail
-from app import app
+#from app import app
 
 host = 'udmnlorrrde3e01.amer.dell.com'
 port = '1521'

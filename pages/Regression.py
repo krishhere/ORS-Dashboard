@@ -10,7 +10,7 @@ import dash_bootstrap_components as dbc
 import plotly.express as px
 import os
 import threading
-from app import app
+#from app import app
 
 host = 'udmnlorrrde3e01.amer.dell.com'
 port = '1521'
