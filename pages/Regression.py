@@ -14,12 +14,10 @@ import threading
 username = 'UFD_ORS'
 password = 'Di$closeNot'
 databaseName = "DITAPJEMEA"
-try:
-    engine = sqlalchemy.create_engine("oracle+cx_oracle://UFD_ORS:Di$closeNot@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=udmnlorrrde3e01.amer.dell.com)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=EFDI.dit.emea.dell.com)))")
-    orders_sql = "SELECT * FROM UFD_ORS.Automation_Status where TEST_TYPE='Regression'"
-    dfRegression = pd.read_sql_query(orders_sql, engine)
-except Exception as ex:
-    print('Failed to connect to %s\n', databaseName+ex)
+
+engine = sqlalchemy.create_engine("oracle+cx_oracle://UFD_ORS:Di$closeNot@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=udmnlorrrde3e01.amer.dell.com)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=EFDI.dit.emea.dell.com)))")
+orders_sql = "SELECT * FROM UFD_ORS.Automation_Status where TEST_TYPE='Regression'"
+dfRegression = pd.read_sql_query(orders_sql, engine)
 
 totalSmokeCount = dfRegression.shape[0]
 lastRunDateGE1 = dfRegression['ge1'].iloc[0].split(",")[0] if dfRegression['ge1'].iloc[0] else 'NULL'
