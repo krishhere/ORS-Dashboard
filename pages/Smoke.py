@@ -11,11 +11,24 @@ import plotly.express as px
 import os
 import threading
 from Mail import sendEmail
+from app import app
+
+host = 'udmnlorrrde3e01.amer.dell.com'
+port = '1521'
+service_name = 'EFDI.dit.emea.dell.com'
+
+dsn = cx_Oracle.makedsn(host, port, service_name=service_name)
 
 username = 'UFD_ORS'
 password = 'Di$closeNot'
 databaseName = "DITAPJEMEA"
-engine = sqlalchemy.create_engine("oracle+cx_oracle://UFD_ORS:Di$closeNot@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=udmnlorrrde3e01.amer.dell.com)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=EFDI.dit.emea.dell.com)))")
+engine = cx_Oracle.connect(username, password, dsn)
+
+#engine = sqlalchemy.create_engine("oracle+cx_oracle://UFD_ORS:Di$closeNot@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=udmnlorrrde3e01.amer.dell.com)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=EFDI.dit.emea.dell.com)))")
+ge1 = 'GE1'
+ge2= 'GE2'
+ge4='GE4'
+profiles = 'PROFILES'
 
 def getData():
     orders_sql = "SELECT * FROM UFD_ORS.Automation_Status where TEST_TYPE='Smoke'"
@@ -24,19 +37,19 @@ def getData():
 
 dfsmoke = getData()
 totalSmokeCount = dfsmoke.shape[0]
-lastRunDateGE1 = dfsmoke['ge1'].iloc[0].split(",")[0] if dfsmoke['ge1'].iloc[0] else 'NULL'
-lastRunDateGE2 = dfsmoke['ge2'].iloc[0].split(",")[0] if dfsmoke['ge2'].iloc[0] else 'NULL'
-lastRunDateGE4 = dfsmoke['ge4'].iloc[0].split(",")[0] if dfsmoke['ge4'].iloc[0] else 'NULL'
+lastRunDateGE1 = dfsmoke[ge1].iloc[0].split(",")[0] if dfsmoke[ge1].iloc[0] else 'NULL'
+lastRunDateGE2 = dfsmoke[ge2].iloc[0].split(",")[0] if dfsmoke[ge2].iloc[0] else 'NULL'
+lastRunDateGE4 = dfsmoke[ge4].iloc[0].split(",")[0] if dfsmoke[ge4].iloc[0] else 'NULL'
 listLastRunDateEnv = [lastRunDateGE1,lastRunDateGE2,lastRunDateGE4]
 RecentRunDate = str(max([i for i in listLastRunDateEnv if i is not 'NULL']))
 index = listLastRunDateEnv.index(RecentRunDate)
 RecentRunEnv = ""
 if(index == 0):
-    RecentRunEnv = "ge1"
+    RecentRunEnv = ge1
 elif(index == 1):
-    RecentRunEnv = "ge2"
+    RecentRunEnv = ge2
 else:
-    RecentRunEnv = "ge4"
+    RecentRunEnv = ge4
 
 def LatestRunDate(env):
     return dfsmoke[env].tolist()[0].split(',')[0]
@@ -79,7 +92,7 @@ def GetHtmlReport(profileName):
     cursor.close()
     connection.close()
 
-dfProfileNames = list(dfsmoke["profiles"].value_counts().keys())
+dfProfileNames = list(dfsmoke[profiles].value_counts().keys())
 start_time = time.time()
 thread_list = []
 for profileName in dfProfileNames:
@@ -101,7 +114,7 @@ def getColor(pro):
 listDAO = []
 listAPJ = []
 listEMEA = []
-for item in dfsmoke['profiles'].tolist():
+for item in dfsmoke[profiles].tolist():
     if('DAO' in item):
         listDAO.append(item)
     elif('APJ' in item):
@@ -148,9 +161,9 @@ layout = html.Div([
 
 @callback(Output("pieSmokechart", "figure"), Input("dropdown", "value"))
 def update_bar_chart(env):
-    val = size(env.lower())
-    name=label(env.lower())
-    latestRunDate=LatestRunDate(env.lower())
+    val = size(env)
+    name=label(env)
+    latestRunDate=LatestRunDate(env)
     SmokeFig = px.pie(values=val, names=name, title='{0} Status on {1}'.format(env,latestRunDate),hole=.4,color_discrete_map={'PASSED':'cyan','FAILED':'darkorange','NotRan':'gold'})
     SmokeFig.update_layout({'plot_bgcolor':'rgba(0, 0, 0, 0)','paper_bgcolor':'rgba(0, 0, 0, 0)'},font_color='white')
     SmokeFig.update_traces(textinfo='label+percent+value')
@@ -158,32 +171,28 @@ def update_bar_chart(env):
 
 @callback(Output("daoProfiles", "children"), Input("dropdown", "value"))
 def daoLinks(env):
-    env=env.lower()
-    ProfileStatus = {k:v[-6:] for k, v in dfsmoke.set_index('profiles')[env].to_dict().items()}
+    ProfileStatus = {k:v[-6:] for k, v in dfsmoke.set_index(profiles)[env].to_dict().items()}
     DAOlinks =[html.A(item, href=f'./assets/output/{env.upper()}/Smoke/{item}.html',target='_blank', style={'font-size':'14px','background-color': '#3c3c3c','color':'white','padding':'0px 5px','text-align':'center','text-decoration':'none','display':'inline-block','border-style': 'solid','border-color': '#3c3c3c','border-left-color': '{0}'.format(getColor(ProfileStatus[item]))}) for item in listDAO]
     return [html.Li(DAOlink,style={'padding-top':'5px'}) for DAOlink in DAOlinks]
 
 @callback(Output("apjProfiles", "children"), Input("dropdown", "value"))
 def daoLinks(env):
-    env=env.lower()
-    ProfileStatus = {k:v[-6:] for k, v in dfsmoke.set_index('profiles')[env].to_dict().items()}
+    ProfileStatus = {k:v[-6:] for k, v in dfsmoke.set_index(profiles)[env].to_dict().items()}
     APJlinks =[html.A(item, href=f'./assets/output/{env.upper()}/Smoke/{item}.html',target='_blank', style={'font-size':'14px','background-color': '#3c3c3c','color':'white','padding':'0px 5px','text-align':'center','text-decoration':'none','display':'inline-block','border-style': 'solid','border-color': '#3c3c3c','border-left-color': '{0}'.format(getColor(ProfileStatus[item]))}) for item in listAPJ]
     return [html.Li(APJlink,style={'padding-top':'5px'}) for APJlink in APJlinks]
 
 @callback(Output("emeaProfiles", "children"), Input("dropdown", "value"))
 def daoLinks(env):
-    env=env.lower()
-    ProfileStatus = {k:v[-6:] for k, v in dfsmoke.set_index('profiles')[env].to_dict().items()}
+    ProfileStatus = {k:v[-6:] for k, v in dfsmoke.set_index(profiles)[env].to_dict().items()}
     EMEAlinks =[html.A(item, href=f'./assets/output/{env.upper()}/Smoke/{item}.html',target='_blank', style={'font-size':'14px','background-color': '#3c3c3c','color':'white','padding':'0px 5px','text-align':'center','text-decoration':'none','display':'inline-block','border-style': 'solid','border-color': '#3c3c3c','border-left-color': '{0}'.format(getColor(ProfileStatus[item]))}) for item in listEMEA]
     return [html.Li(EMEAlink,style={'padding-top':'5px'}) for EMEAlink in EMEAlinks]
 
 @callback(Output('smokeHistory', 'children'), Input("dropdown", "value"))
 def display_data(env):
-    env=env.lower()
     orders_sql = f"select profiles,{env}_first,{env}_second,{env}_third,{env}_fourth,{env}_fifth from ufd_ors.automation_status where test_type='Smoke'"
     dfsmokeHistory = pd.read_sql_query(orders_sql, engine)
     dfsmokeHistory = dfsmokeHistory.fillna('Passed')
-    dfsmokeHistory.insert(loc = 1,column = 'Stability_count',value = "")
+    dfsmokeHistory.insert(loc = 1,column = 'pass_count',value = "")
     j=0
     while(j<dfsmokeHistory.shape[0]):
         listCol =[]
@@ -196,7 +205,7 @@ def display_data(env):
             if(yn == 'Passed'):
                 count = count + 1
             i=i+1
-        dfsmokeHistory.at[j,'Stability_count']=count
+        dfsmokeHistory.at[j,'pass_count']=count
         j=j+1
     table = html.Table([
         html.Thead(

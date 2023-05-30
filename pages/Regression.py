@@ -10,29 +10,41 @@ import dash_bootstrap_components as dbc
 import plotly.express as px
 import os
 import threading
+from app import app
+
+host = 'udmnlorrrde3e01.amer.dell.com'
+port = '1521'
+service_name = 'EFDI.dit.emea.dell.com'
+
+dsn = cx_Oracle.makedsn(host, port, service_name=service_name)
 
 username = 'UFD_ORS'
 password = 'Di$closeNot'
 databaseName = "DITAPJEMEA"
-
-engine = sqlalchemy.create_engine("oracle+cx_oracle://UFD_ORS:Di$closeNot@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=udmnlorrrde3e01.amer.dell.com)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=EFDI.dit.emea.dell.com)))")
+engine = cx_Oracle.connect(username, password, dsn)
+#engine = sqlalchemy.create_engine("oracle+cx_oracle://UFD_ORS:Di$closeNot@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=udmnlorrrde3e01.amer.dell.com)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=EFDI.dit.emea.dell.com)))")
 orders_sql = "SELECT * FROM UFD_ORS.Automation_Status where TEST_TYPE='Regression'"
 dfRegression = pd.read_sql_query(orders_sql, engine)
 
-totalSmokeCount = dfRegression.shape[0]
-lastRunDateGE1 = dfRegression['ge1'].iloc[0].split(",")[0] if dfRegression['ge1'].iloc[0] else 'NULL'
-lastRunDateGE2 = dfRegression['ge2'].iloc[0].split(",")[0] if dfRegression['ge2'].iloc[0] else 'NULL'
-lastRunDateGE4 = dfRegression['ge4'].iloc[0].split(",")[0] if dfRegression['ge4'].iloc[0] else 'NULL'
+ge1 = 'GE1'
+ge2= 'GE2'
+ge4='GE4'
+profiles = 'PROFILES'
+
+totalRegressionCount = dfRegression.shape[0]
+lastRunDateGE1 = dfRegression[ge1].iloc[0].split(",")[0] if dfRegression[ge1].iloc[0] else 'NULL'
+lastRunDateGE2 = dfRegression[ge2].iloc[0].split(",")[0] if dfRegression[ge2].iloc[0] else 'NULL'
+lastRunDateGE4 = dfRegression[ge4].iloc[0].split(",")[0] if dfRegression[ge4].iloc[0] else 'NULL'
 listLastRunDateEnv = [lastRunDateGE1,lastRunDateGE2,lastRunDateGE4]
 RecentRunDate = str(max([i for i in listLastRunDateEnv if i is not 'NULL']))
 index = listLastRunDateEnv.index(RecentRunDate)
 RecentRunEnv = ""
 if(index == 0):
-    RecentRunEnv = "ge1"
+    RecentRunEnv = ge1
 elif(index == 1):
-    RecentRunEnv = "ge2"
+    RecentRunEnv = ge2
 else:
-    RecentRunEnv = "ge4"
+    RecentRunEnv = ge4
 
 def LatestRunDate(env):
     return dfRegression[env].tolist()[0].split(',')[0]
@@ -76,7 +88,7 @@ def GetHtmlReport(profileName):
     cursor.close()
     connection.close()
 
-dfProfileNames = list(dfRegression["profiles"].value_counts().keys())
+dfProfileNames = list(dfRegression[profiles].value_counts().keys())
 start_time = time.time()
 thread_list = []
 for profileName in dfProfileNames:
@@ -98,7 +110,7 @@ def getColor(pro):
 listDAO = []
 listAPJ = []
 listEMEA = []
-for item in dfRegression['profiles'].tolist():
+for item in dfRegression[profiles].tolist():
     if('DAO' in item):
         listDAO.append(item)
     elif('APJ' in item):
@@ -109,7 +121,7 @@ for item in dfRegression['profiles'].tolist():
 layout= html.Div([
     html.Center(html.Span("Regression - Dashboard",className="text-bg-primary btn-lg px-4",style={'padding':'5px','border-radius':'5px'})),
     html.Br(),
-    html.Center(html.H6("Total Regression test cases - {0}".format(totalSmokeCount))),
+    html.Center(html.H6("Total Regression test cases - {0}".format(totalRegressionCount))),
     html.Hr(),
     html.Div([
                 dcc.Dropdown(
@@ -142,9 +154,9 @@ layout= html.Div([
 
 @callback(Output("pieRegressionchart", "figure"), Input("dropdownlist", "value"))
 def update_bar_chart(env):
-    val = size(env.lower())
-    name=label(env.lower())
-    latestRunDate=LatestRunDate(env.lower())
+    val = size(env)
+    name=label(env)
+    latestRunDate=LatestRunDate(env)
     RegressionFig = px.pie(values=val, names=name, title='{0} Status on {1}'.format(env,latestRunDate),hole=.4,color_discrete_map={'NA':'gold','PASS':'cyan','FAIL':'darkorange'})
     RegressionFig.update_layout({'plot_bgcolor':'rgba(0, 0, 0, 0)','paper_bgcolor':'rgba(0, 0, 0, 0)'},font_color='white')
     RegressionFig.update_traces(textinfo='label+percent+value')
@@ -152,21 +164,18 @@ def update_bar_chart(env):
 
 @callback(Output("daoRegressionProfiles", "children"), Input("dropdownlist", "value"))
 def daoLinks(env):
-    env=env.lower()
-    ProfileStatus = {k:v[-6:] for k, v in dfRegression.set_index('profiles')[env].to_dict().items()}
+    ProfileStatus = {k:v[-6:] for k, v in dfRegression.set_index(profiles)[env].to_dict().items()}
     DAOlinks =[html.A(item, href=f'./assets/output/{env.upper()}/Regression/{item}.html',target='_blank', style={'font-size':'14px','background-color': '#3c3c3c','color':'white','padding':'0px 5px','text-align':'center','text-decoration':'none','display':'inline-block','border-style': 'solid','border-color': '#3c3c3c','border-left-color': '{0}'.format(getColor(ProfileStatus[item]))}) for item in listDAO]
     return [html.Li(DAOlink,style={'padding-top':'5px'}) for DAOlink in DAOlinks]
 
 @callback(Output("apjRegressionProfiles", "children"), Input("dropdownlist", "value"))
 def daoLinks(env):
-    env=env.lower()
-    ProfileStatus = {k:v[-6:] for k, v in dfRegression.set_index('profiles')[env].to_dict().items()}
+    ProfileStatus = {k:v[-6:] for k, v in dfRegression.set_index(profiles)[env].to_dict().items()}
     APJlinks =[html.A(item, href=f'./assets/output/{env.upper()}/Regression/{item}.html',target='_blank', style={'font-size':'14px','background-color': '#3c3c3c','color':'white','padding':'0px 5px','text-align':'center','text-decoration':'none','display':'inline-block','border-style': 'solid','border-color': '#3c3c3c','border-left-color': '{0}'.format(getColor(ProfileStatus[item]))}) for item in listAPJ]
     return [html.Li(APJlink,style={'padding-top':'5px'}) for APJlink in APJlinks]
 
 @callback(Output("emeaRegressionProfiles", "children"), Input("dropdownlist", "value"))
 def daoLinks(env):
-    env=env.lower()
-    ProfileStatus = {k:v[-6:] for k, v in dfRegression.set_index('profiles')[env].to_dict().items()}
+    ProfileStatus = {k:v[-6:] for k, v in dfRegression.set_index(profiles)[env].to_dict().items()}
     EMEAlinks =[html.A(item, href=f'./assets/output/{env.upper()}/Regression/{item}.html',target='_blank', style={'font-size':'14px','background-color': '#3c3c3c','color':'white','padding':'0px 5px','text-align':'center','text-decoration':'none','display':'inline-block','border-style': 'solid','border-color': '#3c3c3c','border-left-color': '{0}'.format(getColor(ProfileStatus[item]))}) for item in listEMEA]
     return [html.Li(EMEAlink,style={'padding-top':'5px'}) for EMEAlink in EMEAlinks]
