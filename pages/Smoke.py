@@ -4,6 +4,7 @@ import sqlalchemy
 from sqlalchemy.exc import SQLAlchemyError
 import pandas as pd
 import time
+from datetime import datetime
 dash.register_page(__name__)
 from dash import Dash, dcc, html, Input, Output, dash_table,State,callback
 import dash_bootstrap_components as dbc
@@ -41,7 +42,19 @@ lastRunDateGE1 = dfsmoke[ge1].iloc[0].split(",")[0] if dfsmoke[ge1].iloc[0] else
 lastRunDateGE2 = dfsmoke[ge2].iloc[0].split(",")[0] if dfsmoke[ge2].iloc[0] else 'NULL'
 lastRunDateGE4 = dfsmoke[ge4].iloc[0].split(",")[0] if dfsmoke[ge4].iloc[0] else 'NULL'
 listLastRunDateEnv = [lastRunDateGE1,lastRunDateGE2,lastRunDateGE4]
-RecentRunDate = str(max([i for i in listLastRunDateEnv if i is not 'NULL']))
+def get_recent_date(string_list):
+    dates = []
+    for string in string_list:
+        date = datetime.strptime(string, "%d %b %y")
+        dates.append(date)
+
+    if dates:
+        recent_date = max(dates)
+        return recent_date.strftime("%d %b %y")
+    else:
+        return None
+
+RecentRunDate = get_recent_date(listLastRunDateEnv)
 index = listLastRunDateEnv.index(RecentRunDate)
 RecentRunEnv = ""
 if(index == 0):
@@ -172,19 +185,22 @@ def update_bar_chart(env):
 @callback(Output("daoProfiles", "children"), Input("dropdown", "value"))
 def daoLinks(env):
     ProfileStatus = {k:v[-6:] for k, v in dfsmoke.set_index(profiles)[env].to_dict().items()}
-    DAOlinks =[html.A(item, href=f'./assets/output/{env.upper()}/Smoke/{item}.html',target='_blank', style={'font-size':'14px','background-color': '#3c3c3c','color':'white','padding':'0px 5px','text-align':'center','text-decoration':'none','display':'inline-block','border-style': 'solid','border-color': '#3c3c3c','border-left-color': '{0}'.format(getColor(ProfileStatus[item]))}) for item in listDAO]
+    DAOlinks =[html.A(item, href=f'./assets/output/{env.upper()}/Smoke/{item}.html',target='_blank', style={'font-size':'14px','background-color': '#3c3c3c','color':'white','padding':'0px 5px','text-align':'center','text-decoration':'none','display':'inline-block','border-style': 'solid','border-color': '#3c3c3c','border-left-color': '{0}'.format(getColor(ProfileStatus[item]))}) 
+               for item in listDAO]
     return [html.Li(DAOlink,style={'padding-top':'5px'}) for DAOlink in DAOlinks]
 
 @callback(Output("apjProfiles", "children"), Input("dropdown", "value"))
 def daoLinks(env):
     ProfileStatus = {k:v[-6:] for k, v in dfsmoke.set_index(profiles)[env].to_dict().items()}
-    APJlinks =[html.A(item, href=f'./assets/output/{env.upper()}/Smoke/{item}.html',target='_blank', style={'font-size':'14px','background-color': '#3c3c3c','color':'white','padding':'0px 5px','text-align':'center','text-decoration':'none','display':'inline-block','border-style': 'solid','border-color': '#3c3c3c','border-left-color': '{0}'.format(getColor(ProfileStatus[item]))}) for item in listAPJ]
+    APJlinks =[html.A(item, href=f'./assets/output/{env.upper()}/Smoke/{item}.html',target='_blank', style={'font-size':'14px','background-color': '#3c3c3c','color':'white','padding':'0px 5px','text-align':'center','text-decoration':'none','display':'inline-block','border-style': 'solid','border-color': '#3c3c3c','border-left-color': '{0}'.format(getColor(ProfileStatus[item]))})
+               for item in listAPJ]
     return [html.Li(APJlink,style={'padding-top':'5px'}) for APJlink in APJlinks]
 
 @callback(Output("emeaProfiles", "children"), Input("dropdown", "value"))
 def daoLinks(env):
     ProfileStatus = {k:v[-6:] for k, v in dfsmoke.set_index(profiles)[env].to_dict().items()}
-    EMEAlinks =[html.A(item, href=f'./assets/output/{env.upper()}/Smoke/{item}.html',target='_blank', style={'font-size':'14px','background-color': '#3c3c3c','color':'white','padding':'0px 5px','text-align':'center','text-decoration':'none','display':'inline-block','border-style': 'solid','border-color': '#3c3c3c','border-left-color': '{0}'.format(getColor(ProfileStatus[item]))}) for item in listEMEA]
+    EMEAlinks =[html.A(item, href=f'./assets/output/{env.upper()}/Smoke/{item}.html',target='_blank', style={'font-size':'14px','background-color': '#3c3c3c','color':'white','padding':'0px 5px','text-align':'center','text-decoration':'none','display':'inline-block','border-style': 'solid','border-color': '#3c3c3c','border-left-color': '{0}'.format(getColor(ProfileStatus[item]))})
+                for item in listEMEA]
     return [html.Li(EMEAlink,style={'padding-top':'5px'}) for EMEAlink in EMEAlinks]
 
 @callback(Output('smokeHistory', 'children'), Input("dropdown", "value"))
@@ -207,14 +223,28 @@ def display_data(env):
             i=i+1
         dfsmokeHistory.at[j,'pass_count']=count
         j=j+1
+        
+    def bgcolor(val):
+        flag = val in dfsmoke[profiles].tolist()
+        if(val == 'Passed'):
+            return 'transparent'
+        elif (flag == True):
+            return 'transparent'
+        else:
+            flagInt = False
+            try:
+                if(int(val)):
+                    return 'transparent'
+            except:
+                return 'red'
+
     table = html.Table([
         html.Thead(
-            html.Tr([html.Th(col,style={'width':'14.28%','border-width':'1px','text-align':'center','background-color':'cadetblue'}) for col in dfsmokeHistory.columns],style={'border-bottom-style':'solid','border-bottom-color':'#a9a9a9'})
-        ),
+        html.Tr([html.Th(col,style={'width':'14.25%','border-width':'1px','text-align':'center','background-color':'cadetblue'}) 
+                     for col in dfsmokeHistory.columns])),
         html.Tbody([
-            html.Tr([
-                html.Td(dfsmokeHistory.iloc[i][col],style={'width':'14.28%','border-width':'1px','text-align':'center'}) for col in dfsmokeHistory.columns
-            ],style={'border-bottom-style':'solid','border-bottom-color':'#a9a9a9'}) for i in range(len(dfsmokeHistory))
+        html.Tr([html.Td(dfsmokeHistory.iloc[i][col],style={'width':'14.25%','border-width':'1px','text-align':'center','background-color':f'{bgcolor(dfsmokeHistory.iloc[i][col])}'}) 
+        for col in dfsmokeHistory.columns]) for i in range(len(dfsmokeHistory))
         ])
     ])
     return table

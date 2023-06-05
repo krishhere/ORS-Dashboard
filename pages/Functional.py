@@ -80,7 +80,7 @@ layout = html.Div([
     html.Div([
     html.Div([
     dcc.Dropdown(style={'color':'#000','float':'left','width':'300px'},
-        id='searchInput',options=sorted(dfFunctional['TESTCASE_ID'].to_list(),key=int,reverse=True),
+        id='searchInput',options=sorted(dfFunctional['TESTCASE_ID'].to_list(),key=int,reverse=True)[:5],
         searchable=True,
         placeholder="Enter test case id"),
     html.Button('Search', id='searchButton',className="text-bg-primary btn-lg px-4",style={"border-color":"transparent",'border-radius':'4px','height':'36px'})
@@ -94,12 +94,15 @@ layout = html.Div([
 @callback(Output('searchOutput', 'children'),[Input('searchButton', 'n_clicks')],[State('searchInput', 'value')])
 def search(n_clicks, search_term):
     if n_clicks is not None:
-        if len(search_term)>5:
-            ranEnv = selectEnv(search_term)
-            GetHtmlReport(search_term,ranEnv)
-            return [html.A('Report('+search_term+')', href=f'./assets/Functional/{search_term}.html',target='_blank', style={'font-size':'14px','color':'#11adf7','padding':'10px','font-weight':'bold'})]
+        if search_term is not None:
+            if len(search_term)>5:
+                ranEnv = selectEnv(search_term)
+                GetHtmlReport(search_term,ranEnv)
+                return [html.A('Report('+search_term+')', href=f'./assets/Functional/{search_term}.html',target='_blank', style={'font-size':'14px','color':'#11adf7','padding':'10px','font-weight':'bold'})]
+            else:
+                return 'No testcase exists'
         else:
-            return 'No testcase exists'
+                return 'Type testcase id'
 
 @callback(Output('testcaseStatus', 'children'),[Input('searchButton', 'n_clicks')],[State('searchInput', 'value')])
 def search(n_clicks, search_term):
