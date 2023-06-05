@@ -69,15 +69,6 @@ layout = html.Div([
     html.Center(html.Span("Functional - Dashboard",className="text-bg-primary btn-lg px-4",style={'padding':'5px','border-radius':'5px'})),
     html.Hr(),
     html.Div([
-        html.Div(style={'width':'200px'},children=[
-            dcc.Dropdown(id="dropdown",options=ReleaseLists, value=release, clearable=False,style={'color':'#000'}),
-        ],className="col-lg-4"),
-        html.Div(html.Center(id='output'),className="col-lg-8")
-    ],className="row"),
-    html.Div([
-        dcc.Graph(id="bar-chart",config={"displaylogo": False,'modeBarButtonsToRemove': ['zoom2d', 'pan2d', 'select2d','lasso2d', 'zoomIn2d', 'zoomOut2d','autoScale2d']}),
-        html.Hr()],className="col-lg-12"),
-    html.Div([
     html.Div([
     dcc.Dropdown(style={'color':'#000','float':'left','width':'300px'},
         id='searchInput',options=sorted(dfFunctional['TESTCASE_ID'].to_list(),key=int,reverse=True)[:5],
@@ -88,7 +79,17 @@ layout = html.Div([
     html.Div([
         html.Span(id="testcaseStatus"),
         html.Span(id='searchOutput')
-    ],className="col-lg-7")],className="row")
+    ],className="col-lg-7")],className="row"),
+    html.Hr(),
+    html.Div([
+        html.Div(style={'width':'200px'},children=[
+            dcc.Dropdown(id="dropdown",options=ReleaseLists, value=release, clearable=False,style={'color':'#000'}),
+        ],className="col-lg-4"),
+        html.Div(html.Center(id='output'),className="col-lg-8")
+    ],className="row"),
+    html.Div([
+        dcc.Graph(id="bar-chart",config={"displaylogo": False,'modeBarButtonsToRemove': ['zoom2d', 'pan2d', 'select2d','lasso2d', 'zoomIn2d', 'zoomOut2d','autoScale2d']}),
+        html.Hr()],className="col-lg-12")
 ],className="col-lg-12 mx-auto p-4")
 
 @callback(Output('searchOutput', 'children'),[Input('searchButton', 'n_clicks')],[State('searchInput', 'value')])

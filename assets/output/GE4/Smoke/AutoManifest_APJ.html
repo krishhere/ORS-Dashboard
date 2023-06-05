@@ -42,7 +42,7 @@
 		<span class='report-name'>Smoke_AutoManifest_APJ</span>
 		<span class='report-headline'></span>
 		<ul id='nav-mobile' class='right hide-on-med-and-down nav-right'>
-			<a href='#!'><span class='label blue darken-3 suite-start-time'>6/1/2023 5:04:50 AM</span></a>
+			<a href='#!'><span class='label blue darken-3 suite-start-time'>6/5/2023 4:49:57 AM</span></a>
 		</ul>
 	</div>
 </nav>
@@ -58,8 +58,8 @@
 				<i class='material-icons'>warning</i> Status
 				</a>
 				<ul id='tests-toggle' class='dropdown-content'>
-					<li status='pass'><a href='#!'>Pass <i class='material-icons green-text'>check_circle</i></a></li>
-																														<li class='divider'></li>
+															<li status='fail'><a href='#!'>Fail <i class='material-icons red-text'>cancel</i></a></li>
+																				<li class='divider'></li>
 					<li status='clear' clear='true'><a href='#!'>Clear Filters <i class='material-icons'>clear</i></a></li>
 				</ul>
 			</div>
@@ -103,10 +103,10 @@
                     <canvas id='parent-analysis' width='90' height='80'></canvas>
                 </div>
                 <div class='block text-small'>
-                    <span class='tooltipped' data-position='top' data-tooltip='100%'><span class='strong'>1</span> test passed</span>
+                    <span class='tooltipped' data-position='top' data-tooltip='0%'><span class='strong'>0</span> test passed</span>
                 </div>
                 <div class='block text-small'>
-                    <span class='tooltipped' data-position='top' data-tooltip='0%'><span class='strong'>0</span> failed,</span>
+                    <span class='tooltipped' data-position='top' data-tooltip='100%'><span class='strong'>1</span> failed,</span>
 					<span class='tooltipped' data-position='top' data-tooltip='0%'><span class='strong'>0</span> skipped, </span>
 					<span class='tooltipped' data-position='top' data-tooltip='0%'><span class='strong'>0</span> others</span>
                 </div>
@@ -117,17 +117,17 @@
 	<div class='subview-left left'>
 		<div class='view-summary'>
 			<ul id='test-collection' class='test-collection'>
-				<li class='test displayed active  pass' status='pass' test-id='1'>
+				<li class='test displayed active  fail' status='fail' test-id='1'>
 					<div class='test-heading'>
 						<span class='test-name'>Smoke_AutoManifest_APJ</span>
-						<span class='test-time'>6/1/2023 5:04:57 AM</span>
-						<span class='test-status right pass'>Pass</span>
+						<span class='test-time'>6/5/2023 4:50:05 AM</span>
+						<span class='test-status right fail'>Fail</span>
 					</div>
 					<div class='test-content hide'>
 						<div class='test-time-info'>
-							<span class='label start-time'>6/1/2023 5:04:57 AM</span>
-							<span class='label end-time'>6/1/2023 5:06:16 AM</span>
-							<span class='label time-taken grey lighten-1 white-text'>0h:1m:19s.189ms</span>
+							<span class='label start-time'>6/5/2023 4:50:05 AM</span>
+							<span class='label end-time'>6/5/2023 4:50:31 AM</span>
+							<span class='label time-taken grey lighten-1 white-text'>0h:0m:26s.886ms</span>
 						</div>
 							<div class='test-steps'>
 								<table class='bordered table-results'>
@@ -143,77 +143,50 @@
 											<td class='status info' title='Info' alt='Info'>
 												<i class='material-icons'>info_outline</i>
 											</td>
-											<td class='timestamp'>05:04:58</td>
+											<td class='timestamp'>04:50:06</td>
 											<td class='step-details'>
 Environment: <b>GE4, Region: APJ</b>																							</td>
 										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
+										<tr class='log' status='fail'>
+											<td class='status fail' title='Fail' alt='Fail'>
+												<i class='material-icons'>cancel</i>
 											</td>
-											<td class='timestamp'>05:05:30</td>
+											<td class='timestamp'>04:50:08</td>
 											<td class='step-details'>
-Sample order: <b>931050435</b>																							</td>
+<span style='color: red; font-size:13px;'>ORA-12514: TNS:listener does not currently know of service requested in connect descriptor</span>																							</td>
 										</tr>
 										<tr class='log' status='info'>
 											<td class='status info' title='Info' alt='Info'>
 												<i class='material-icons'>info_outline</i>
 											</td>
-											<td class='timestamp'>05:05:30</td>
+											<td class='timestamp'>04:50:10</td>
 											<td class='step-details'>
 <h3 style='text-transform: uppercase;color:#ffa500;font-weight: bold;margin:0 0 0 0;text-align: center;font-size:14px'>Downloading & Validating the Order</span></h3>																							</td>
 										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
+										<tr class='log' status='fail'>
+											<td class='status fail' title='Fail' alt='Fail'>
+												<i class='material-icons'>cancel</i>
 											</td>
-											<td class='timestamp'>05:05:59</td>
+											<td class='timestamp'>04:50:31</td>
 											<td class='step-details'>
-Order: <a href='https://ofsapjge4.us.dell.com/OFS/Reports/OrderLogHistory.aspx?BUID=1401&OrderID=931050435&secureId=7b7c8' target='_blank'>931050435</a>																							</td>
+<span style='color: red; font-size:13px;'>Service Account(svc_npditautomation) password is missmatching.</span>																							</td>
 										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
+										<tr class='log' status='fail'>
+											<td class='status fail' title='Fail' alt='Fail'>
+												<i class='material-icons'>cancel</i>
 											</td>
-											<td class='timestamp'>05:06:11</td>
+											<td class='timestamp'>04:50:31</td>
 											<td class='step-details'>
-GSO is reached OFS in 00:11																							</td>
-										</tr>
-										<tr class='log' status='info'>
-											<td class='status info' title='Info' alt='Info'>
-												<i class='material-icons'>info_outline</i>
-											</td>
-											<td class='timestamp'>05:06:11</td>
-											<td class='step-details'>
-<h3 style='text-transform: uppercase;color:#ffa500;font-weight: bold;margin:0 0 0 0;text-align: center;font-size:14px'>Validating Rules</span></h3>																							</td>
-										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
-											</td>
-											<td class='timestamp'>05:06:16</td>
-											<td class='step-details'>
-Rule <b><i>set software tie for OFS-VIS</i></b> is existed.																							</td>
-										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
-											</td>
-											<td class='timestamp'>05:06:16</td>
-											<td class='step-details'>
-Rule <b><i>Set IsChannelASN flag to NA for VIS/DEE/OFS ABACUS</i></b> is existed.																							</td>
-										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
-											</td>
-											<td class='timestamp'>05:06:16</td>
-											<td class='step-details'>
-Rule <b><i>Trigger SOAUTOMANIFEST event to STABLE for VIS</i></b> is existed.																							</td>
+																							</td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
+							<ul class='screenshots'>
+								<li>
+									<img class='r-img' title='Screenshot error: ' onerror='this.style.display="none"' data-featherlight='/builds/globalops/BPM/order-orchestration/Order_Routing_Automation/ofsfunctionalautomation/TestAutomation/bin/Debug/netcoreapp3.1/Result/Screenshots/Smoke_AutoManifest_APJ_050623045031.png' src='/builds/globalops/BPM/order-orchestration/Order_Routing_Automation/ofsfunctionalautomation/TestAutomation/bin/Debug/netcoreapp3.1/Result/Screenshots/Smoke_AutoManifest_APJ_050623045031.png' data-src='/builds/globalops/BPM/order-orchestration/Order_Routing_Automation/ofsfunctionalautomation/TestAutomation/bin/Debug/netcoreapp3.1/Result/Screenshots/Smoke_AutoManifest_APJ_050623045031.png'>
+								</li>
+							</ul>
 					</div>
 				</li>
 			</ul>
@@ -265,19 +238,19 @@ Rule <b><i>Trigger SOAUTOMANIFEST event to STABLE for VIS</i></b> is existed.			
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Start
-					<div class='panel-lead'>6/1/2023 5:04:50 AM</div>
+					<div class='panel-lead'>6/5/2023 4:49:57 AM</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 			 		End
-			 		<div class='panel-lead'>6/1/2023 5:06:16 AM</div>
+			 		<div class='panel-lead'>6/5/2023 4:50:32 AM</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Time Taken
-					<div class='panel-lead'>00:01:30.7324345</div>
+					<div class='panel-lead'>00:00:38.6363558</div>
 				</div>
 			</div>
 					</div>
@@ -291,13 +264,13 @@ Rule <b><i>Trigger SOAUTOMANIFEST event to STABLE for VIS</i></b> is existed.			
 		<script>
 			var statusGroup = {
                 parentCount: 1,
-				passParent: 1,
-				failParent: 0,
+				passParent: 0,
+				failParent: 1,
 				fatalParent: 0,
 				errorParent: 0,
 				warningParent: 0,
 				skipParent: 0,
-				exceptionsParent: 0,
+				exceptionsParent: 1,
 				childCount: 0,
 				passChild: 0,
 				failChild: 0,

@@ -42,7 +42,7 @@
 		<span class='report-name'>Smoke_PureSofwareDF_APJ</span>
 		<span class='report-headline'></span>
 		<ul id='nav-mobile' class='right hide-on-med-and-down nav-right'>
-			<a href='#!'><span class='label blue darken-3 suite-start-time'>6/1/2023 6:50:35 AM</span></a>
+			<a href='#!'><span class='label blue darken-3 suite-start-time'>6/5/2023 5:02:15 AM</span></a>
 		</ul>
 	</div>
 </nav>
@@ -58,8 +58,8 @@
 				<i class='material-icons'>warning</i> Status
 				</a>
 				<ul id='tests-toggle' class='dropdown-content'>
-					<li status='pass'><a href='#!'>Pass <i class='material-icons green-text'>check_circle</i></a></li>
-																														<li class='divider'></li>
+															<li status='fail'><a href='#!'>Fail <i class='material-icons red-text'>cancel</i></a></li>
+																				<li class='divider'></li>
 					<li status='clear' clear='true'><a href='#!'>Clear Filters <i class='material-icons'>clear</i></a></li>
 				</ul>
 			</div>
@@ -103,10 +103,10 @@
                     <canvas id='parent-analysis' width='90' height='80'></canvas>
                 </div>
                 <div class='block text-small'>
-                    <span class='tooltipped' data-position='top' data-tooltip='100%'><span class='strong'>1</span> test passed</span>
+                    <span class='tooltipped' data-position='top' data-tooltip='0%'><span class='strong'>0</span> test passed</span>
                 </div>
                 <div class='block text-small'>
-                    <span class='tooltipped' data-position='top' data-tooltip='0%'><span class='strong'>0</span> failed,</span>
+                    <span class='tooltipped' data-position='top' data-tooltip='100%'><span class='strong'>1</span> failed,</span>
 					<span class='tooltipped' data-position='top' data-tooltip='0%'><span class='strong'>0</span> skipped, </span>
 					<span class='tooltipped' data-position='top' data-tooltip='0%'><span class='strong'>0</span> others</span>
                 </div>
@@ -117,17 +117,17 @@
 	<div class='subview-left left'>
 		<div class='view-summary'>
 			<ul id='test-collection' class='test-collection'>
-				<li class='test displayed active  pass' status='pass' test-id='15'>
+				<li class='test displayed active  fail' status='fail' test-id='15'>
 					<div class='test-heading'>
 						<span class='test-name'>Smoke_PureSofwareDF_APJ</span>
-						<span class='test-time'>6/1/2023 6:50:42 AM</span>
-						<span class='test-status right pass'>Pass</span>
+						<span class='test-time'>6/5/2023 5:02:22 AM</span>
+						<span class='test-status right fail'>Fail</span>
 					</div>
 					<div class='test-content hide'>
 						<div class='test-time-info'>
-							<span class='label start-time'>6/1/2023 6:50:42 AM</span>
-							<span class='label end-time'>6/1/2023 6:54:45 AM</span>
-							<span class='label time-taken grey lighten-1 white-text'>0h:4m:2s.673ms</span>
+							<span class='label start-time'>6/5/2023 5:02:22 AM</span>
+							<span class='label end-time'>6/5/2023 5:02:48 AM</span>
+							<span class='label time-taken grey lighten-1 white-text'>0h:0m:26s.535ms</span>
 						</div>
 							<div class='test-steps'>
 								<table class='bordered table-results'>
@@ -143,141 +143,50 @@
 											<td class='status info' title='Info' alt='Info'>
 												<i class='material-icons'>info_outline</i>
 											</td>
-											<td class='timestamp'>06:50:43</td>
+											<td class='timestamp'>05:02:23</td>
 											<td class='step-details'>
 Environment: <b>GE4, Region: APJ</b>																							</td>
 										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
+										<tr class='log' status='fail'>
+											<td class='status fail' title='Fail' alt='Fail'>
+												<i class='material-icons'>cancel</i>
 											</td>
-											<td class='timestamp'>06:50:47</td>
+											<td class='timestamp'>05:02:25</td>
 											<td class='step-details'>
-Sample order: <b>931050615</b>																							</td>
+<span style='color: red; font-size:13px;'>ORA-12514: TNS:listener does not currently know of service requested in connect descriptor</span>																							</td>
 										</tr>
 										<tr class='log' status='info'>
 											<td class='status info' title='Info' alt='Info'>
 												<i class='material-icons'>info_outline</i>
 											</td>
-											<td class='timestamp'>06:50:47</td>
+											<td class='timestamp'>05:02:27</td>
 											<td class='step-details'>
 <h3 style='text-transform: uppercase;color:#ffa500;font-weight: bold;margin:0 0 0 0;text-align: center;font-size:14px'>Downloading & Validating the Order</span></h3>																							</td>
 										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
+										<tr class='log' status='fail'>
+											<td class='status fail' title='Fail' alt='Fail'>
+												<i class='material-icons'>cancel</i>
 											</td>
-											<td class='timestamp'>06:51:16</td>
+											<td class='timestamp'>05:02:48</td>
 											<td class='step-details'>
-Order: <a href='https://ofsapjge4.us.dell.com/OFS/Reports/OrderLogHistory.aspx?BUID=4545&OrderID=931050615&secureId=3c1da' target='_blank'>931050615</a>																							</td>
+<span style='color: red; font-size:13px;'>Service Account(svc_npditautomation) password is missmatching.</span>																							</td>
 										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
+										<tr class='log' status='fail'>
+											<td class='status fail' title='Fail' alt='Fail'>
+												<i class='material-icons'>cancel</i>
 											</td>
-											<td class='timestamp'>06:51:28</td>
+											<td class='timestamp'>05:02:48</td>
 											<td class='step-details'>
-GSO is reached OFS in 00:11																							</td>
-										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
-											</td>
-											<td class='timestamp'>06:51:28</td>
-											<td class='step-details'>
-Mocking GRPRESPONSE with FSL																							</td>
-										</tr>
-										<tr class='log' status='info'>
-											<td class='status info' title='Info' alt='Info'>
-												<i class='material-icons'>info_outline</i>
-											</td>
-											<td class='timestamp'>06:54:38</td>
-											<td class='step-details'>
-<h3 style='text-transform: uppercase;color:#ffa500;font-weight: bold;margin:0 0 0 0;text-align: center;font-size:14px'>Validating Rules</span></h3>																							</td>
-										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
-											</td>
-											<td class='timestamp'>06:54:44</td>
-											<td class='step-details'>
-Rule <b><i>Set CreateSoftwareServiceWO for SCV INFO MOD.</i></b> is existed.																							</td>
-										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
-											</td>
-											<td class='timestamp'>06:54:44</td>
-											<td class='step-details'>
-Rule <b><i>Set CreateSoftwareServiceWO to Y for Isilon</i></b> is existed.																							</td>
-										</tr>
-										<tr class='log' status='info'>
-											<td class='status info' title='Info' alt='Info'>
-												<i class='material-icons'>info_outline</i>
-											</td>
-											<td class='timestamp'>06:54:44</td>
-											<td class='step-details'>
-<h3 style='text-transform: uppercase;color:#ffa500;font-weight: bold;margin:0 0 0 0;text-align: center;font-size:14px'>Validating Work Orders</span></h3>																							</td>
-										</tr>
-										<tr class='log' status='info'>
-											<td class='status info' title='Info' alt='Info'>
-												<i class='material-icons'>info_outline</i>
-											</td>
-											<td class='timestamp'>06:54:45</td>
-											<td class='step-details'>
-<b>'00:00'</b> minute(s) waited for workorder(s)																							</td>
-										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
-											</td>
-											<td class='timestamp'>06:54:45</td>
-											<td class='step-details'>
-Work order ID- <b><i>57179921</i ></b>, channel- DF, Vendor_Site_ID- DF																							</td>
-										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
-											</td>
-											<td class='timestamp'>06:54:45</td>
-											<td class='step-details'>
-Work order ID- <b><i>57179931</i ></b>, channel- GOLF, Vendor_Site_ID- BKR																							</td>
-										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
-											</td>
-											<td class='timestamp'>06:54:45</td>
-											<td class='step-details'>
-Work order ID- <b><i>57179941</i ></b>, channel- GOLF, Vendor_Site_ID- APM																							</td>
-										</tr>
-										<tr class='log' status='pass'>
-											<td class='status pass' title='Pass' alt='Pass'>
-												<i class='material-icons'>check_circle</i>
-											</td>
-											<td class='timestamp'>06:54:45</td>
-											<td class='step-details'>
-Work order ID- <b><i>57179951</i ></b>, channel- BOSS, Vendor_Site_ID- APCX																							</td>
-										</tr>
-										<tr class='log' status='info'>
-											<td class='status info' title='Info' alt='Info'>
-												<i class='material-icons'>info_outline</i>
-											</td>
-											<td class='timestamp'>06:54:45</td>
-											<td class='step-details'>
-<h3 style='text-transform: uppercase;color:#ffa500;font-weight: bold;margin:0 0 0 0;text-align: center;font-size:14px'>Validating GPO attributes</span></h3>																							</td>
-										</tr>
-										<tr class='log' status='info'>
-											<td class='status info' title='Info' alt='Info'>
-												<i class='material-icons'>info_outline</i>
-											</td>
-											<td class='timestamp'>06:54:45</td>
-											<td class='step-details'>
-Attribute is <b>'CreateSoftwareServiceWO </b>existed in GPO.																							</td>
+																							</td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
+							<ul class='screenshots'>
+								<li>
+									<img class='r-img' title='Screenshot error: ' onerror='this.style.display="none"' data-featherlight='/builds/globalops/BPM/order-orchestration/Order_Routing_Automation/ofsfunctionalautomation/TestAutomation/bin/Debug/netcoreapp3.1/Result/Screenshots/Smoke_AutoManifest_APJ_050623045031.pngSmoke_CTO_APJ_050623045258.pngSmoke_HardMerge_APJ_050623045530.pngSmoke_HardMerge_EMEA_050623045604.pngSmoke_ISG_APJ_050623045640.pngSmoke_ISG_EMEA_050623045715.pngSmoke_IsIsilon_APJ_050623045750.pngSmoke_IsIsilon_EMEA_050623045824.pngSmoke_IsProDeploy_EMEA_050623045858.pngSmoke_OTM_APJ_050623045933.pngSmoke_OTM_EMEA_050623050214.pngSmoke_PureSofwareDF_APJ_050623050248.png' src='/builds/globalops/BPM/order-orchestration/Order_Routing_Automation/ofsfunctionalautomation/TestAutomation/bin/Debug/netcoreapp3.1/Result/Screenshots/Smoke_AutoManifest_APJ_050623045031.pngSmoke_CTO_APJ_050623045258.pngSmoke_HardMerge_APJ_050623045530.pngSmoke_HardMerge_EMEA_050623045604.pngSmoke_ISG_APJ_050623045640.pngSmoke_ISG_EMEA_050623045715.pngSmoke_IsIsilon_APJ_050623045750.pngSmoke_IsIsilon_EMEA_050623045824.pngSmoke_IsProDeploy_EMEA_050623045858.pngSmoke_OTM_APJ_050623045933.pngSmoke_OTM_EMEA_050623050214.pngSmoke_PureSofwareDF_APJ_050623050248.png' data-src='/builds/globalops/BPM/order-orchestration/Order_Routing_Automation/ofsfunctionalautomation/TestAutomation/bin/Debug/netcoreapp3.1/Result/Screenshots/Smoke_AutoManifest_APJ_050623045031.pngSmoke_CTO_APJ_050623045258.pngSmoke_HardMerge_APJ_050623045530.pngSmoke_HardMerge_EMEA_050623045604.pngSmoke_ISG_APJ_050623045640.pngSmoke_ISG_EMEA_050623045715.pngSmoke_IsIsilon_APJ_050623045750.pngSmoke_IsIsilon_EMEA_050623045824.pngSmoke_IsProDeploy_EMEA_050623045858.pngSmoke_OTM_APJ_050623045933.pngSmoke_OTM_EMEA_050623050214.pngSmoke_PureSofwareDF_APJ_050623050248.png'>
+								</li>
+							</ul>
 					</div>
 				</li>
 			</ul>
@@ -329,19 +238,19 @@ Attribute is <b>'CreateSoftwareServiceWO </b>existed in GPO.																				
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Start
-					<div class='panel-lead'>6/1/2023 6:50:35 AM</div>
+					<div class='panel-lead'>6/5/2023 5:02:15 AM</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 			 		End
-			 		<div class='panel-lead'>6/1/2023 6:54:45 AM</div>
+			 		<div class='panel-lead'>6/5/2023 5:02:49 AM</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Time Taken
-					<div class='panel-lead'>00:04:10.0848495</div>
+					<div class='panel-lead'>00:00:34.0198152</div>
 				</div>
 			</div>
 					</div>
@@ -355,13 +264,13 @@ Attribute is <b>'CreateSoftwareServiceWO </b>existed in GPO.																				
 		<script>
 			var statusGroup = {
                 parentCount: 1,
-				passParent: 1,
-				failParent: 0,
+				passParent: 0,
+				failParent: 1,
 				fatalParent: 0,
 				errorParent: 0,
 				warningParent: 0,
 				skipParent: 0,
-				exceptionsParent: 0,
+				exceptionsParent: 1,
 				childCount: 0,
 				passChild: 0,
 				failChild: 0,

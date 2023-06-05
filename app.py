@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 app = dash.Dash(__name__, use_pages=True,
                 external_stylesheets=['https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css',
                                                                 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'])
-server = app.server
+#server = app.server
 
 navbar = dbc.NavbarSimple(
     dbc.Nav(
