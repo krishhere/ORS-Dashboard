@@ -38,6 +38,9 @@ Releases = sorted(dfFunctional.RELEASE_TARGET.unique(),reverse=True)
 ReleaseLists =[{"label": x, "value": x} for x in Releases]
 release = Releases[0]
 
+Sprints = sorted(dfFunctional.SPRINT.dropna().unique(),reverse=True)
+SprintsLists =[{"label": x, "value": x} for x in Sprints]
+
 path = f"./assets/Functional/"
 for files in os.listdir(path):
     file = path + files
@@ -72,7 +75,7 @@ layout = html.Div([
     html.Div([
     dcc.Dropdown(style={'color':'#000','float':'left','width':'300px'},
         id='searchInput',options=sorted(dfFunctional['TESTCASE_ID'].to_list(),key=int,reverse=True)[:5],
-        searchable=True,
+        clearable=True,
         placeholder="Enter test case id"),
     html.Button('Search', id='searchButton',className="text-bg-primary btn-lg px-4",style={"border-color":"transparent",'border-radius':'4px','height':'36px'})
     ],className="col-lg-5"),
@@ -83,9 +86,12 @@ layout = html.Div([
     html.Hr(),
     html.Div([
         html.Div(style={'width':'200px'},children=[
-            dcc.Dropdown(id="dropdown",options=ReleaseLists, value=release, clearable=False,style={'color':'#000'}),
+            dcc.Dropdown(id="dropdown",options=ReleaseLists, value=release, clearable=False,style={'color':'#000'})
         ],className="col-lg-4"),
-        html.Div(html.Center(id='output'),className="col-lg-8")
+        html.Div(html.P(id='output'),className="col-lg-5"),
+        html.Div(style={'width':'160px'},children=[
+            dcc.Dropdown(id="dropdown1",options=SprintsLists, value="Select-sprint", clearable=True,style={'color':'#000'})],
+                 className="col-lg-3")
     ],className="row"),
     html.Div([
         dcc.Graph(id="bar-chart",config={"displaylogo": False,'modeBarButtonsToRemove': ['zoom2d', 'pan2d', 'select2d','lasso2d', 'zoomIn2d', 'zoomOut2d','autoScale2d']}),
@@ -115,17 +121,26 @@ def search(n_clicks, search_term):
         else:
             return ''
 
-@callback(Output("bar-chart", "figure"),[Input("dropdown", "value")])
-def update_bar_chart(release):
-    releaseValues = dfFunctional[release_target] == release
-    value_counts = dfFunctional[releaseValues][profiles].value_counts().reset_index()
-    value_counts.columns = ['Profiles', 'Testcase_Count']
-    fig = px.bar(value_counts, x='Profiles', y='Testcase_Count',labels={'x': 'Profiles', 'y': 'Test case Count'}, text='Testcase_Count', title='Release wise programs status')
-    # fig.update_traces(textposition='outside')
-    fig.update_layout({'plot_bgcolor':'rgba(0, 0, 0, 0)','paper_bgcolor':'rgba(0, 0, 0, 0)'},font_color='white',xaxis_showgrid=False, yaxis_showgrid=False)
-    return fig
+@callback(Output("bar-chart", "figure"), [Input('dropdown', 'value'),Input('dropdown1', 'value')])
+def update_bar_chart(release, sprint):
+    if (sprint!=None):
+        dfRelease = dfFunctional[dfFunctional[release_target]==release]
+        value_counts=dfRelease[dfRelease['SPRINT']==sprint][profiles].value_counts().reset_index()
+        value_counts.columns = ['Profiles', 'Testcase_Count']
+        fig = px.bar(value_counts, x='Profiles', y='Testcase_Count',labels={'x': 'Profiles', 'y': 'Test case Count'}, text='Testcase_Count', title='Sprint wise programs status')
+        # fig.update_traces(textposition='outside')
+        fig.update_layout({'plot_bgcolor':'rgba(0, 0, 0, 0)','paper_bgcolor':'rgba(0, 0, 0, 0)'},font_color='white',xaxis_showgrid=False, yaxis_showgrid=False)
+        return fig
+    else:
+        releaseValues = dfFunctional[release_target] == release
+        value_counts = dfFunctional[releaseValues][profiles].value_counts().reset_index()
+        value_counts.columns = ['Profiles', 'Testcase_Count']
+        fig = px.bar(value_counts, x='Profiles', y='Testcase_Count',labels={'x': 'Profiles', 'y': 'Test case Count'}, text='Testcase_Count', title='Release wise programs status')
+        # fig.update_traces(textposition='outside')
+        fig.update_layout({'plot_bgcolor':'rgba(0, 0, 0, 0)','paper_bgcolor':'rgba(0, 0, 0, 0)'},font_color='white',xaxis_showgrid=False, yaxis_showgrid=False)
+        return fig
 
 @callback(Output('output', 'children'),[Input('dropdown', 'value')])
 def update_output(release):
     releaseTestCaseCount = (dfFunctional[release_target] == release).sum()
-    return f'Total {releaseTestCaseCount} test cases are automated in {release}.'
+    return f'{releaseTestCaseCount} test cases are automated in {release}.'
